@@ -95,5 +95,9 @@
           "check-type",
           "check-typecast"
       ]
+  },
+  "compilerOptions": {
+      "noImplicitAny": true,
+      "removeComments": true
   }
 }

@@ -9,6 +9,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const { CheckerPlugin } = require('awesome-typescript-loader');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 
@@ -124,7 +125,7 @@ module.exports = {
       // It's important to do this before Typescript runs.
       {
         test: /\.(ts|tsx|js|jsx)$/,
-        loader: require.resolve('tslint-loader'),
+        loader: require.resolve('awesome-typescript-loader'),
         enforce: 'pre',
         include: paths.appSrc,
       },
@@ -180,7 +181,7 @@ module.exports = {
                     {
                       loader: require.resolve('css-loader'),
                       options: {
-                        importLoaders: 1,
+                        importLoaders: 2,
                         minimize: true,
                         sourceMap: shouldUseSourceMap,
                       },
@@ -193,6 +194,7 @@ module.exports = {
                         ident: 'postcss',
                         plugins: () => [
                           require('postcss-flexbugs-fixes'),
+                          require('precss'),
                           autoprefixer({
                             browsers: [
                               '>1%',
@@ -204,6 +206,9 @@ module.exports = {
                           }),
                         ],
                       },
+                    },
+                    {
+                      loader: require.resolve('sass-loader'),
                     },
                   ],
                 },
@@ -326,6 +331,13 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new CheckerPlugin(),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Popper: ['popper.js', 'default'],
+    }),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
