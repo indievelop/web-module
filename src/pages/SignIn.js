@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import { TextField, PasswordField } from '../components/Input';
+import { SubmitButton } from '../components/Button';
 
 class SignIn extends Component {
   render () {
     return (
     <div>
-      <input type='text' name='username'/>
-      <input type='password' name='password'/>
-      <button>SiginIn</button>
+      <TextField id="username" name="username" placeholder="username" title="username" labelSize={2}/>
+      <PasswordField id="password" name="password" placeholder="password" title="password" labelSize={0}/>
+      <SubmitButton>SiginIn</SubmitButton>
     </div>
     );
   }
