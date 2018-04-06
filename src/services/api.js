@@ -1,4 +1,4 @@
-import { Schema, arrayOf, normalize } from 'normalizr'
+import { schema, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 import 'isomorphic-fetch'
 
@@ -56,11 +56,11 @@ function callApi(endpoint, schema) {
 // Read more about Normalizr: https://github.com/gaearon/normalizr
 
 // Schemas for Github API responses.
-const userSchema = new Schema('users', {
+const userSchema = new schema.Entity('users', {}, {
   idAttribute: 'id'
 });
 
-const postSchema = new Schema('post', {
+const postSchema = new schema.Entity('post', {}, {
   idAttribute: 'id'
 });
 
@@ -68,9 +68,9 @@ postSchema.define({
   owner: userSchema
 });
 
-const userSchemaArray = arrayOf(userSchema);
-const postSchemaArray = arrayOf(postSchema);
+// const userSchemaArray = schema.Array(userSchema);
+// const postSchemaArray = schema.Array(postSchema);
 
 // api services
-export const fetchUser = login => callApi(`users/${id}`, userSchema);
-export const fetchPost = fullName => callApi(`post/${id}`, postSchema);
+export const fetchUser = id => callApi(`users/${id}`, userSchema);
+export const fetchPost = id => callApi(`post/${id}`, postSchema);

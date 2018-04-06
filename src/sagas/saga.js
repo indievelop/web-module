@@ -2,10 +2,10 @@
 import { take, put, call, fork, select, all } from 'redux-saga/effects';
 import { api, history } from '../services';
 import * as actions from '../actions';
-import { getUser, getPost } from '../reducers/selectors';
+import { getUser, getPost } from '../reducers/selector';
 
 // each entity defines 3 creators { request, success, failure }
-const { user, post } = actions
+const { user, post } = actions;
 
 /***************************** Subroutines ************************************/
 
@@ -67,7 +67,7 @@ function* watchLoadUserPage() {
 // Fetches data for a Post: post data
 function* watchLoadPostPage() {
   while(true) {
-    const { id, requiredFields = [] } = yield take(actions.LOAD_REPO_PAGE)
+    const { id, requiredFields = [] } = yield take(actions.LOAD_POST_PAGE)
 
     yield fork(loadPost, id, requiredFields)
   }

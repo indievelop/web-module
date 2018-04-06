@@ -20,13 +20,13 @@ export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
 
 
 function action(type, payload = {}) {
-  return {type, ...payload}
+  return { type, ...payload };
 }
 
 export const user = {
   request: id => action(USER[REQUEST], { id }),
-  success: (id, response) => action(USER[SUCCESS], {id, response}),
-  failure: (id, error) => action(USER[FAILURE], {id, error}),
+  success: (id, response) => action(USER[SUCCESS], { id, response }),
+  failure: (id, error) => action(USER[FAILURE], { id, error }),
 }
 
 export const post = {
@@ -37,7 +37,7 @@ export const post = {
 
 export const updateRouterState = state => action(UPDATE_ROUTER_STATE, {state})
 export const navigate = pathname => action(NAVIGATE, {pathname})
-export const loadUserPage = (login, requiredFields = []) => action(LOAD_USER_PAGE, { id, requiredFields });
-export const loadPostPage = (fullName, requiredFields = []) => action(LOAD_POST_PAGE, { id, requiredFields });
+export const loadUserPage = (id, requiredFields = []) => action(LOAD_USER_PAGE, { id, requiredFields });
+export const loadPostPage = (id, requiredFields = []) => action(LOAD_POST_PAGE, { id, requiredFields });
 
 export const resetErrorMessage = () => action(RESET_ERROR_MESSAGE)

@@ -36,7 +36,7 @@ export default function paginate({ types, mapActionToKey }) {
       case failureType:
         return {
           isFetching: false,
-          ...state;
+          ...state,
         };
       default:
         return state
@@ -54,7 +54,7 @@ export default function paginate({ types, mapActionToKey }) {
           throw new Error('Expected key to be a string.')
         }
         return {
-          [key]: updatePagination(state[key], action)
+          [key]: updatePagination(state[key], action),
           ...state,
         };
       default:

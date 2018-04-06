@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {} from '../reducers/user';
 
 class UserList extends Component {
   render () {
@@ -13,13 +13,14 @@ class UserList extends Component {
 }
 
 UserList.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,isRequired,
-    username: PropTypes.string.isRequired,
-    password: PropTypes.string,
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: [PropTypes.number, null],
+      username: PropTypes.string.isRequired,
+      password: PropTypes.string,
   }))
 };
 
 export default connect(state => (
-  { users: }
+  { users: state.users }
 ))(UserList);

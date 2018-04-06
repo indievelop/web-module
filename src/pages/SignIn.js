@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextField, PasswordField } from '../components/Input';
+import { TextField, PasswordField } from '../components/Field';
 import { SubmitButton } from '../components/Button';
 
 class SignIn extends Component {

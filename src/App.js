@@ -10,18 +10,19 @@ import './App.scss';
 
 class App extends Component {
   render() {
+    const navDatas = [ { to: '/', key: 'home' }, { to: '/signin', key: 'signin' }, { to: '/signup', key: 'signup' } ];
+    const NavItems = navDatas.map((nav) => <NavItem to={nav.to} key={nav.key}></NavItem> );
+
     return (
       <Provider store={store}>
         <Router history={history} routes={Routes}>
           <div className="App container-fluid">
             <NavBar>
-              <NavItem to='/'>Home</NavItem>
-              <NavItem to='/signin'>SignIn</NavItem>
-              <NavItem to='/signup'>SignUp</NavItem>
+              {NavItems}
             </NavBar>
+            { process.env.NODE_ENV !== 'production' && <DevTools /> }
           </div>
         </Router>
-        { process.env.NODE_ENV !== 'production' && <DevTools /> }
       </Provider>
     );
   }

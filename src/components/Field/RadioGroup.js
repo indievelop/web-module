@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class RadioGroup extends Component {
   render () {
-    const { children, name, label ...props } = type
+    const { children, name, label, ...props } = this.props;
     return (
       <fieldset className="form-group">
         <div className="row">

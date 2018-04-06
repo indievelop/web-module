@@ -13,7 +13,7 @@ const data ={
   password: 'efgh'
 };
 
-const lower = value => value && value.toLowerCase();\
+const lower = value => value && value.toLowerCase();
 const normalizePhone = value => {
   if (!value) {
     return value
@@ -55,7 +55,7 @@ const asyncValidate = (values /*, dispatch */) => {
   return sleep(1000).then(() => {
     // simulate server latency
     if (['test', 'paul', 'george', 'ringo'].includes(values.username)) {
-      throw { username: 'That username is taken' }
+      throw { username: 'That username is taken' };
     }
   })
 }

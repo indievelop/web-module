@@ -16,7 +16,7 @@ class NavBar extends Component {
         </button>
         <div className="collapse navbar-collapse" id="navbarContent">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-            {...children}
+            { children }
           </ul>
         </div>        
       </nav>

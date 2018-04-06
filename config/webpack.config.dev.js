@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const getClientEnvironment = require('./env');
@@ -55,8 +56,6 @@ module.exports = {
     // changing JS code would still trigger a refresh.
   ],
   output: {
-    // Next line is not used in dev but WebpackDevServer crashes without it:
-    path: paths.appBuild,
     // Add /* filename */ comments to generated require()s in the output.
     pathinfo: true,
     // This does not produce a real file. It's just the virtual path that is
@@ -96,6 +95,7 @@ module.exports = {
       '.json',
       '.web.jsx',
       '.jsx',
+      '.mjs',
     ],
     alias: {
       
@@ -122,15 +122,21 @@ module.exports = {
       // First, run the linter.
       // It's important to do this before Babel processes the JS.
       {
-        test: /\.(ts|tsx|js|jsx)$/,
-        loader: require.resolve('awesome-typescript-loader'),
+        test: /\.(js|jsx|ts|tsx|mjs)$/,
         enforce: 'pre',
-        include: paths.appSrc,
-      },
-      {
-        test: /\.js$/,
-        loader: require.resolve('source-map-loader'),
-        enforce: 'pre',
+        use: [
+          {
+            options: {
+              formatter: eslintFormatter,
+              eslintPath: require.resolve('eslint'),
+              
+            },
+            loader: require.resolve('eslint-loader'),
+          },
+          {
+            loader: require.resolve('source-map-loader'),
+          },
+        ],
         include: paths.appSrc,
       },
       {
@@ -149,14 +155,51 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
-          // Compile .tsx?
           {
-            test: /\.(ts|tsx|js|jsx)$/,
+            test: /\.(js|jsx|ts|tsx|mjs)$/,
             include: paths.appSrc,
-            loader: require.resolve('ts-loader'),
-            options: {
-              entryFileIsJs: true,
-            },
+            use: [
+              // Process JS with Babel.
+              // {
+              //   loader: require.resolve('babel-loader'),
+              //   options: {
+              //     // This is a feature of `babel-loader` for webpack (not Babel itself).
+              //     // It enables caching results in ./node_modules/.cache/babel-loader/
+              //     // directory for faster rebuilds.
+              //     cacheDirectory: true,
+              //   },
+              // },
+              // Compile .tsx?
+              {
+                loader: require.resolve('awesome-typescript-loader'),
+                options: {
+                  entryFileIsJs: true,
+                },
+              },
+            ],
+          },
+          {
+            test: /\.(js|jsx|ts|tsx|mjs)$/,
+            include: paths.appSrc,
+            use: [
+              // Process JS with Babel.
+              {
+                loader: require.resolve('babel-loader'),
+                options: {
+                  // This is a feature of `babel-loader` for webpack (not Babel itself).
+                  // It enables caching results in ./node_modules/.cache/babel-loader/
+                  // directory for faster rebuilds.
+                  cacheDirectory: true,
+                },
+              },
+              // Compile .tsx?
+              {
+                loader: require.resolve('awesome-typescript-loader'),
+                options: {
+                  entryFileIsJs: true,
+                },
+              },
+            ],
           },
           // "postcss" loader applies autoprefixer to our CSS.
           // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -211,7 +254,7 @@ module.exports = {
             // it's runtime that would otherwise processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.js$/, /\.html$/, /\.json$/],
+            exclude: [/\.(js|jsx|ts|tsx|mjs)$/, /\.html$/, /\.json$/],
             loader: require.resolve('file-loader'),
             options: {
               name: 'static/media/[name].[hash:8].[ext]',

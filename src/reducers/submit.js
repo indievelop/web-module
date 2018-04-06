@@ -9,7 +9,7 @@ const submit = values => {
         username: 'User does noe exist',
         _error: 'Login failed'
       })
-    } else if (values.password != 'test') {
+    } else if (values.password !== 'test') {
       throw new SubmissionError({
         password: 'Wrong password',
         _error: 'Login faild'
